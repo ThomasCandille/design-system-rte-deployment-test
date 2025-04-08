@@ -43,6 +43,20 @@ jobs:
           rm -f package-lock.json
           npm ci
 
+      # Install dependencies for react storybook
+      - name: Install dependencies for react storybook
+        run: |
+          cd ./packages/react
+          rm -f package-lock.json
+          npm ci
+
+      # Install dependencies for angular storybook
+      - name: Install dependencies for angular storybook
+        run: |
+          cd ./packages/angular
+          rm -f package-lock.json
+          npm ci
+
       # Build Design Docs Storybook
       - name: Build Design Docs Storybook
         run: |
