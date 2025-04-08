@@ -1,7 +1,6 @@
 name: Build and Publish Storybook to GitHub Pages
 
 on:
-  # Event for the workflow to run on
   push:
     branches:
       - 'main' # Replace with the branch you want to deploy from
@@ -11,24 +10,52 @@ permissions:
   pages: write
   id-token: write
 
-# List of jobs
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    # Job steps
+
     steps:
-      # Manual Checkout
-      - uses: actions/checkout@v4
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      # Set up Node
-      - uses: actions/setup-node@v4
+
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
-      #👇 Add Storybook build and deploy to GitHub Pages as a step in the workflow
-      - uses: bitovi/github-actions-storybook-to-github-pages@v1.0.3
+
+      # Cache Node.js dependencies
+      - name: Cache Node.js dependencies
+        uses: actions/cache@v3
         with:
-          install_command: npm ci
-          build_command: npm run
-          path: ./packages/design-docs/storybook-static # default: dist/storybook
-          checkout: false # default: true
+          path: ~/.npm
+          key: deps-node20-main-${{ hashFiles('package-lock.json') }}-${{ github.run_id }}
+          restore-keys: |
+            deps-node20-main-
+
+      # Install dependencies and remove package-lock.json
+      - name: Install dependencies and remove package-lock.json
+        run: |
+          cd ./packages/design-docs
+          rm -f package-lock.json
+          npm ci
+
+      # Build Design Docs Storybook
+      - name: Build Design Docs Storybook
+        run: |
+          npm run build-design-docs
+
+      # Build Base Storybook
+      - name: Build Base Storybook
+        run: |
+          npm run build-base-storybook
+
+      # Deploy Storybook to GitHub Pages
+      - name: Deploy Storybook to GitHub Pages
+        uses: bitovi/github-actions-storybook-to-github-pages@v1.0.3
+        with:
+          path: ./packages/design-docs/storybook-static # Path to the built Storybook
+          checkout: false
