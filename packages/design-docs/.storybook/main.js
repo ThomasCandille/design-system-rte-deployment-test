@@ -26,32 +26,31 @@ const config = {
     "options": {}
   },
 
-
-  // TODO: set this conf from ENV variables instead.
-  // We can't duplicate the refs property in config.
-  
-  //refs for deployment
-  "refs": {
-    "angular": {
-      title: 'Angular',
-      url: 'https://thomascandille.github.io/design-system-rte-deployment-test/angular/',
-    },
-    "react": {
-      title: 'React',
-      url: 'https://thomascandille.github.io/design-system-rte-deployment-test/react/',
-    },
-  }
-
-  //refs for local test
-  /*"refs": {
-    "angular": {
-      title: 'Angular',
-      url: 'http://localhost:7007',
-    },
-    "react": {
-      title: 'React',
-      url: 'http://localhost:7008',
-    },
-  },*/
+  // Dynamic refs configuration based on configType
+  refs: ({ configType }) => {
+    if (configType === 'DEVELOPMENT') {
+      return {
+        react: {
+          title: 'Composed React Storybook running in development mode',
+          url: 'http://localhost:7007',
+        },
+        angular: {
+          title: 'Composed Angular Storybook running in development mode',
+          url: 'http://localhost:7008',
+        },
+      };
+    }
+    return {
+      react: {
+        title: 'Composed React Storybook running in production',
+        url: 'https://thomascandille.github.io/design-system-rte-deployment-test/react/',
+      },
+      angular: {
+        title: 'Composed Angular Storybook running in production',
+        url: 'https://thomascandille.github.io/design-system-rte-deployment-test/angular/',
+      },
+    };
+  },
 };
+
 export default config;
