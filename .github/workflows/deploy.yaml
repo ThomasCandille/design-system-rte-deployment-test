@@ -57,6 +57,12 @@ jobs:
           rm -f package-lock.json
           npm ci
 
+      # Install dependencies for root
+      - name: Install dependencies for root
+        run: |
+          rm -f package-lock.json
+          npm ci
+
       # Build React Storybook
       - name: Build React Storybook
         run: |
