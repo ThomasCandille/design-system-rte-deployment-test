@@ -11,8 +11,38 @@ permissions:
   id-token: write
 
 jobs:
+  global-install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Cache node_modules and Vite cache
+        id: cache-packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ./node_modules
+            ./packages/react/node_modules
+            ./packages/react/.vite
+            ./packages/angular/node_modules
+            ./packages/angular/.vite
+          key: deps-node20-PR-${{ hashFiles('package-lock.json') }}-${{ github.run_id }}
+          restore-keys: |
+            deps-node20-PR-
+
+      - name: Install dependencies
+        if: steps.cache-packages.outputs.cache-hit != 'true'
+        run: npm ci --prefer-offline
+
   deploy:
     runs-on: ubuntu-latest
+    needs: global-install
 
     steps:
       # Checkout the repository
@@ -27,59 +57,15 @@ jobs:
         with:
           node-version: '20'
 
-      # Cache Node.js dependencies
-      - name: Cache Node.js dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: deps-node20-main-${{ hashFiles('**/package-lock.json') }}-${{ github.run_id }}
-          restore-keys: |
-            deps-node20-main-
-
-      # Install dependencies for Design Docs Storybook
-      - name: Install dependencies for Design Docs Storybook
-        run: |
-          cd ./packages/design-docs
-          rm -f package-lock.json
-          npm ci
-
-      # Install dependencies for React Storybook
-      - name: Install dependencies for React Storybook
-        run: |
-          cd ./packages/react
-          rm -f package-lock.json
-          npm ci
-
-      # Install dependencies for Angular Storybook
-      - name: Install dependencies for Angular Storybook
-        run: |
-          cd ./packages/angular
-          rm -f package-lock.json
-          npm ci
-
-      # Install dependencies for root
-      - name: Install dependencies for root
-        run: |
-          rm -f package-lock.json
-          npm ci
-
-      # Build React Storybook
-      - name: Build React Storybook
-        run: |
-          cd ./packages/react
-          npm run build-storybook
-
-      # Build Angular Storybook
-      - name: Build Angular Storybook
-        run: |
-          cd ./packages/angular
-          npm run build-storybook
-
       # Build Design Docs Storybook (Container Storybook)
       - name: Build Design Docs Storybook
         run: |
-          cd ./packages/design-docs
-          npm run build-storybook
+          npm run build-design-docs
+
+      # Build Base Storybook (Container Storybook)
+      - name: Build Base Storybook
+        run: |
+          npm run build-base-storybook
 
       # Deploy Storybook Composition to GitHub Pages
       - name: Deploy Storybook Composition to GitHub Pages
