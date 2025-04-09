@@ -1,4 +1,4 @@
-name: Build and Publish Storybook to GitHub Pages
+name: Publish Storybook Composition to GitHub Pages
 
 on:
   push:
@@ -32,44 +32,52 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.npm
-          key: deps-node20-main-${{ hashFiles('package-lock.json') }}-${{ github.run_id }}
+          key: deps-node20-main-${{ hashFiles('**/package-lock.json') }}-${{ github.run_id }}
           restore-keys: |
             deps-node20-main-
 
-      # Install dependencies and remove package-lock.json
-      - name: Install dependencies and remove package-lock.json
+      # Install dependencies for Design Docs Storybook
+      - name: Install dependencies for Design Docs Storybook
         run: |
           cd ./packages/design-docs
           rm -f package-lock.json
           npm ci
 
-      # Install dependencies for react storybook
-      - name: Install dependencies for react storybook
+      # Install dependencies for React Storybook
+      - name: Install dependencies for React Storybook
         run: |
           cd ./packages/react
           rm -f package-lock.json
           npm ci
 
-      # Install dependencies for angular storybook
-      - name: Install dependencies for angular storybook
+      # Install dependencies for Angular Storybook
+      - name: Install dependencies for Angular Storybook
         run: |
           cd ./packages/angular
           rm -f package-lock.json
           npm ci
 
-      # Build Design Docs Storybook
+      # Build React Storybook
+      - name: Build React Storybook
+        run: |
+          cd ./packages/react
+          npm run build-storybook
+
+      # Build Angular Storybook
+      - name: Build Angular Storybook
+        run: |
+          cd ./packages/angular
+          npm run build-storybook
+
+      # Build Design Docs Storybook (Container Storybook)
       - name: Build Design Docs Storybook
         run: |
-          npm run build-design-docs
+          cd ./packages/design-docs
+          npm run build-storybook
 
-      # Build Base Storybook
-      - name: Build Base Storybook
-        run: |
-          npm run build-base-storybook
-
-      # Deploy Storybook to GitHub Pages
-      - name: Deploy Storybook to GitHub Pages
+      # Deploy Storybook Composition to GitHub Pages
+      - name: Deploy Storybook Composition to GitHub Pages
         uses: bitovi/github-actions-storybook-to-github-pages@v1.0.3
         with:
-          path: ./packages/design-docs/storybook-static # Path to the built Storybook
+          path: ./packages/design-docs/storybook-static # Path to the container Storybook
           checkout: false
