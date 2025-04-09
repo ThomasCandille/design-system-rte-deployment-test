@@ -7,6 +7,27 @@ import { join, dirname } from "path"
 function getAbsolutePath(value) {
   return dirname(require.resolve(join(value, 'package.json')))
 }
+const developmentRefs = {
+  react: {
+  title: 'Composed React Storybook running in development mode',
+  url: 'http://localhost:7007',
+  },
+  angular: {
+  title: 'Composed Angular Storybook running in development mode',
+  url: 'http://localhost:7008',
+  },
+};
+
+const productionRefs = {
+  react: {
+  title: 'Composed React Storybook running in production',
+  url: 'https://thomascandille.github.io/design-system-rte-deployment-test/react/',
+  },
+  angular: {
+  title: 'Composed Angular Storybook running in production',
+  url: 'https://thomascandille.github.io/design-system-rte-deployment-test/angular/',
+  },
+};
 
 /** @type { import('@storybook/react-vite').StorybookConfig } */
 const config = {
@@ -28,28 +49,8 @@ const config = {
 
   // Dynamic refs configuration based on configType
   refs: ({ configType }) => {
-    if (configType === 'DEVELOPMENT') {
-      return {
-        react: {
-          title: 'Composed React Storybook running in development mode',
-          url: 'http://localhost:7007',
-        },
-        angular: {
-          title: 'Composed Angular Storybook running in development mode',
-          url: 'http://localhost:7008',
-        },
-      };
-    }
-    return {
-      react: {
-        title: 'Composed React Storybook running in production',
-        url: 'https://thomascandille.github.io/design-system-rte-deployment-test/react/',
-      },
-      angular: {
-        title: 'Composed Angular Storybook running in production',
-        url: 'https://thomascandille.github.io/design-system-rte-deployment-test/angular/',
-      },
-    };
+
+    return configType === 'DEVELOPMENT' ? developmentRefs : productionRefs;
   },
 };
 
