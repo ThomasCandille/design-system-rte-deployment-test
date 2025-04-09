@@ -57,9 +57,14 @@ jobs:
 
       # Deploy Storybook build to GitHub Pages
 
-      - name: Deploy Storybook build to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./packages/design-docs/storybook-static
-          publish_branch: gh-pages
+          path: './packages/design-docs/storybook-static'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
