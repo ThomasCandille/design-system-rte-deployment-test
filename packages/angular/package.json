@@ -18,10 +18,10 @@
     "@angular/platform-browser": "^17.3.0",
     "@angular/platform-browser-dynamic": "^17.3.0",
     "@angular/router": "^17.3.0",
-    "@design-system-rte/core": "^0.1.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.14.3"
+    "zone.js": "~0.14.3",
+    "@design-system-rte/core": "^0.1.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^17.3.12",
@@ -34,10 +34,8 @@
     "@storybook/addon-essentials": "^8.6.6",
     "@storybook/addon-interactions": "^8.6.6",
     "@storybook/addon-onboarding": "^8.6.6",
-    "@storybook/addon-themes": "^8.6.12",
     "@storybook/angular": "^8.6.6",
     "@storybook/blocks": "^8.6.6",
-    "@storybook/experimental-addon-test": "^8.6.12",
     "@storybook/test": "^8.6.6",
     "@types/jasmine": "~5.1.0",
     "jasmine-core": "~5.1.0",
