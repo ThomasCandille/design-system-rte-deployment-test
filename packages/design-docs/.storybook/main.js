@@ -18,6 +18,7 @@ const config = {
     getAbsolutePath('@storybook/addon-essentials'),
     getAbsolutePath('@storybook/addon-onboarding'),
     getAbsolutePath('@chromatic-com/storybook'),
+    getAbsolutePath("@storybook/experimental-addon-test"),
     getAbsolutePath("@storybook/addon-themes"),
   ],
   "framework": {
