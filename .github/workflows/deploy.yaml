@@ -55,9 +55,11 @@ jobs:
       - name: Build Base Storybook
         run: npm run build-base-storybook
 
-      # Deploy only the built Storybook folder to GitHub Pages
-      - name: Deploy Storybook to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      # Deploy Storybook build to GitHub Pages
+
+      - name: Deploy Storybook build to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./packages/design-docs/storybook-static # Path to the built Storybook folder
+          publish_dir: ./packages/design-docs/storybook-static
+          publish_branch: main
