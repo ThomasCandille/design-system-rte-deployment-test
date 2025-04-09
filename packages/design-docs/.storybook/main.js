@@ -31,19 +31,19 @@ const config = {
   // We can't duplicate the refs property in config.
   
   //refs for deployment
-  /*"refs": {
+  "refs": {
     "angular": {
       title: 'Angular',
-      url: 'https://rte-france.github.io/design-system-rte/angular/',
+      url: 'https://thomascandille.github.io/design-system-rte-deployment-test/angular/',
     },
     "react": {
       title: 'React',
-      url: 'https://rte-france.github.io/design-system-rte/react/',
+      url: 'https://thomascandille.github.io/design-system-rte-deployment-test/react/',
     },
-  },*/
+  }
 
   //refs for local test
-  "refs": {
+  /*"refs": {
     "angular": {
       title: 'Angular',
       url: 'http://localhost:7007',
@@ -52,6 +52,6 @@ const config = {
       title: 'React',
       url: 'http://localhost:7008',
     },
-  },
+  },*/
 };
 export default config;

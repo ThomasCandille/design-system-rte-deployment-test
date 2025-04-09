@@ -51,7 +51,7 @@ jobs:
       - name: Build Design Docs Storybook
         run: npm run build-design-docs
 
-      # Build Base Storybook (Container Storybook)
+      # Build Base Storybook (Content Storybook)
       - name: Build Base Storybook
         run: npm run build-base-storybook
 
